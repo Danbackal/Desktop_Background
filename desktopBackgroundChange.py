@@ -4,6 +4,7 @@ import ctypes
 import os
 import sys
 from time import sleep
+from random import randint
 
 
 def main():
@@ -21,11 +22,13 @@ def main():
         if len(backgrounds) == 0:
             print("No pictures found in folder")
             return 1
-        for i in backgrounds:
+        while len(backgrounds) > 0:
+            j = randint(0,len(backgrounds)-1)
             ctypes.windll.user32.SystemParametersInfoW(20,
                                                        0,
-                                                       os.path.join(path, i),
+                                                       os.path.join(path, backgrounds[j]),
                                                        0)
+            del backgrounds[j]
             sleep(6)
 
     return 0
