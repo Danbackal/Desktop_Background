@@ -4,7 +4,7 @@ import ctypes
 import os
 import sys
 from time import sleep
-from random import randint
+from random import choice
 
 
 def main():
@@ -17,19 +17,23 @@ def main():
 
     # since this is personal, just hard coding path
     path = "C:\\Users\\Backal\\Backgrounds"
+    visited = []
     while True:
         backgrounds = get_picture_list(path)
-        if len(backgrounds) == 0:
-            print("No pictures found in folder")
-            return 1
-        while len(backgrounds) > 0:
-            j = randint(0,len(backgrounds)-1)
+        while len(backgrounds) > len(visited):
+            if len(backgrounds) == 0:
+                print("No pictures found in folder")
+                return 1
+            pic = choice(backgrounds)
+            while pic in visited:
+                pic = choice(backgrounds)
             ctypes.windll.user32.SystemParametersInfoW(20,
                                                        0,
-                                                       os.path.join(path, backgrounds[j]),
+                                                       os.path.join(path, pic),
                                                        0)
-            del backgrounds[j]
-            sleep(6)
+            visited.append(pic)
+            sleep(300)
+        visited = []
 
     return 0
 
